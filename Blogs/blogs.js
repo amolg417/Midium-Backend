@@ -187,7 +187,7 @@ router.get("/post/:postId", async (req, res) => {
 router.get("/userPicked", async (req, res) => {
   let filter = { IsPicked: true };
   try {
-    let response = await BlogModal.find(filter).populate({ path: "User", select: "_id Name Profile" });
+    let response = await BlogModal.find(filter).limit(3).populate({ path: "User", select: "_id Name Profile" });
     res.status(200).json({
       message: "post fetched successfully",
       data: response,
