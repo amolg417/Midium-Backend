@@ -71,24 +71,23 @@ router.post("/comments/:postId", Authmiddleware, async (req, res) => {
   let { postId } = req.params;
   let { Description } = req.body;
   try {
-    if(Description.trim()){
-
+    if (Description.trim()) {
       let comment = new commentModal({
         Description: Description,
         CreatedAt: new Date().getTime(),
         User: req.User.id,
         PostId: postId,
       });
-      
+
       let response = await comment.save();
       res.status(200).json({
         message: "comment saved successfully",
         data: response,
       });
-    }else{
+    } else {
       res.status(401).json({
-        message:"Comment can not be empty spaces"
-      })
+        message: "Comment can not be empty spaces",
+      });
     }
   } catch (err) {
     res.status(500).json({
@@ -100,7 +99,9 @@ router.post("/comments/:postId", Authmiddleware, async (req, res) => {
 router.get("/comments/:postId", async (req, res) => {
   let { postId } = req.params;
   try {
-     let response = await commentModal.find({ PostId: postId }).populate({ path: "User", select: "_id Name Profile" });
+    let response = await commentModal
+      .find({ PostId: postId })
+      .populate({ path: "User", select: "_id Name Profile" });
     if (response?.length) {
       res.status(200).json({
         message: "comment fetched successfully",
@@ -187,7 +188,9 @@ router.get("/post/:postId", async (req, res) => {
 router.get("/userPicked", async (req, res) => {
   let filter = { IsPicked: true };
   try {
-    let response = await BlogModal.find(filter).limit(3).populate({ path: "User", select: "_id Name Profile" });
+    let response = await BlogModal.find(filter)
+      .limit(3)
+      .populate({ path: "User", select: "_id Name Profile" });
     res.status(200).json({
       message: "post fetched successfully",
       data: response,
@@ -200,7 +203,10 @@ router.get("/userPicked", async (req, res) => {
 });
 router.get("/popular", async (req, res) => {
   try {
-    let response = await BlogModal.find({ Views: { $gt: 10 } }).populate({ path: "User", select: "_id Name Profile" });
+    let response = await BlogModal.find({ Views: { $gt: 10 } }).populate({
+      path: "User",
+      select: "_id Name Profile",
+    });
     res.status(200).json({
       message: "post fetched successfully",
       data: response,
