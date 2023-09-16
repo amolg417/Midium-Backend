@@ -18,7 +18,7 @@ let ProfileStorage = multer.diskStorage({
   },
 });
 
-let upload = multer({
+  let upload = multer({
   storage: ProfileStorage,
 });
 router.post("/register", upload.single("avatar"), async (req, res) => {
@@ -34,7 +34,7 @@ router.post("/register", upload.single("avatar"), async (req, res) => {
     });
 
     let response = await User.save();
-    res.status(200).json({
+    res.status(201).json({
       message: "User is Registered Successsfully",
       Data: response,
     });
