@@ -80,9 +80,11 @@ router.post("/comments/:postId", Authmiddleware, async (req, res) => {
       });
 
       let response = await comment.save();
+      let newComment=await commentModal.findOne({_id:response._id}).populate('User','_id Name Profile')
+    
       res.status(200).json({
         message: "comment saved successfully",
-        data: response,
+        data: newComment,
       });
     } else {
       res.status(401).json({
